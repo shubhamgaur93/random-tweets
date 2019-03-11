@@ -3,6 +3,6 @@ import moment from "moment";
 const countWeek = date =>
   moment()
     .subtract(7, "days")
-    .format() < moment(date).format();
+    .isBefore(moment(date));
 
 export default countWeek;

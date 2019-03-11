@@ -49,3 +49,7 @@ body {
 .hash_tag span {
   font-weight: 600;
 }
+.btnContRefresh {
+  display: flex;
+  justify-content: flex-end;
+}

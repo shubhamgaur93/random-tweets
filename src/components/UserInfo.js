@@ -1,7 +1,9 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
-import countWeek from "./Util";
+import Button from "@material-ui/core/Button";
+
+import countWeek from "../Util";
 
 const styles = {
   root: {
@@ -20,6 +22,14 @@ class UserInfo extends React.Component {
       return acc;
     }, 0);
 
+  tweetCount = () =>
+    this.props.userInfo.tweets.reduce((acc, val) => {
+      if (countWeek(val.created_at)) {
+        acc = acc + 1;
+      }
+      return acc;
+    }, 0);
+
   followerCount = () =>
     this.props.userInfo.followers.users.reduce((acc, val) => {
       if (countWeek(val.created_at)) {
@@ -29,11 +39,16 @@ class UserInfo extends React.Component {
     }, 0);
 
   render() {
-    const { classes } = this.props;
+    const { classes, getUser } = this.props;
     let userInfo = this.props.userInfo;
     return (
       <div className={`${classes.root} test`}>
         <div>
+          <div className="btnContRefresh">
+            <Button color="primary" variant="text" onClick={getUser}>
+              Refresh
+            </Button>
+          </div>
           <div className="username">
             <img
               alt="Remy Sharp"
@@ -53,13 +68,18 @@ class UserInfo extends React.Component {
             {userInfo.user.description}
           </Typography>
         </div>
-        <div className="hash_tag">
+        <div className="tweetCount">
+          <Typography variant="h6" gutterBottom>
+            Tweet Count : <span>{this.tweetCount()}</span>
+          </Typography>
+        </div>
+        <div className="hashTag">
           <Typography variant="h6" gutterBottom>
             #hash_tag : <span>{this.hashTagCount()}</span>
           </Typography>
         </div>
 
-        <div className="hash_tag">
+        <div className="follower">
           <Typography variant="h6" gutterBottom>
             Followers : <span>{this.followerCount()}</span>
           </Typography>

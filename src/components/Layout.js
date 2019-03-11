@@ -10,21 +10,11 @@ class Layout extends React.Component {
       userInfo: null
     };
   }
-  render() {
-    let { loader, userInfo } = this.state;
-    return (
-      <>
-        {loader && (
-          <div id="loaderContainer">
-            <Loader type="Plane" color="#00BFFF" height="100" width="100" />
-          </div>
-        )}
 
-        {userInfo && <UserInfo userInfo={userInfo} />}
-      </>
-    );
-  }
-  componentDidMount() {
+  getUser = () => {
+    this.setState({
+      loader: true
+    });
     fetch("http://localhost:4000/getUser")
       .then(data => data.json())
       .then(userInfo => {
@@ -37,6 +27,26 @@ class Layout extends React.Component {
       .catch(err => {
         console.log(err);
       });
+  };
+
+  componentDidMount() {
+    this.getUser();
+  }
+  render() {
+    let { loader, userInfo } = this.state;
+    return (
+      <>
+        {loader && (
+          <div id="loaderContainer">
+            <Loader type="Plane" color="#00BFFF" height="100" width="100" />
+          </div>
+        )}
+
+        {!loader && userInfo && (
+          <UserInfo userInfo={userInfo} getUser={this.getUser} />
+        )}
+      </>
+    );
   }
 }
 export default Layout;
